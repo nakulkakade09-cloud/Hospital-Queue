@@ -6,6 +6,7 @@
     "dev": "next dev",
     "web": "next dev",
     "build": "next build",
+    "deploy": "next build && npx gh-pages -d out -t true",
     "start": "next start",
     "lint": "next lint"
   },
@@ -20,6 +21,7 @@
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "autoprefixer": "^10.4.20",
+    "gh-pages": "^6.3.0",
     "postcss": "^8.4.49",
     "tailwindcss": "^3.4.15",
     "typescript": "^5.6.3"
