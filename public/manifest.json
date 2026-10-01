@@ -1,0 +1,16 @@
+{
+  "name": "Journey Queue - Smart Rural Hospital Queue",
+  "short_name": "JourneyQueue",
+  "description": "Smart hospital journey & queue management system for rural and government hospitals.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F8FAFC",
+  "theme_color": "#0E7490",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml"
+    }
+  ]
+}
