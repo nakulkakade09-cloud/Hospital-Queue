@@ -8,19 +8,15 @@ import { SpecialistDoctor } from '@/types';
 import { StatusBadge } from '@/components/StatusBadge';
 import {
   Calendar,
-  Clock,
-  MapPin,
-  CheckCircle2,
-  AlertTriangle,
   User,
   Phone,
   ArrowRight,
-  Filter,
   Building2,
   RotateCcw,
-  Sparkles,
   ShieldCheck,
   Stethoscope,
+  AlertTriangle,
+  CheckCircle2,
 } from 'lucide-react';
 
 export default function SpecialistCalendarPage() {
@@ -82,25 +78,25 @@ export default function SpecialistCalendarPage() {
       setBookingSuccessToken(newPatient.tokenNumber);
       setTimeout(() => {
         router.push(`/journey/${newPatient.id}`);
-      }, 1200);
+      }, 1000);
     }
   };
 
   return (
-    <div className="py-8 sm:py-12 bg-slate-50 min-h-screen">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+    <div className="py-6 sm:py-10 bg-slate-50 min-h-screen">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
         {/* Header */}
         <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-card">
           <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
             <div>
               <div className="inline-flex items-center gap-2 px-3 py-1 bg-sky-100 text-primary font-bold text-xs rounded-full mb-3">
                 <Calendar className="w-3.5 h-3.5" />
-                <span>ग्रामीण फिरते तज्ज्ञ डॉक्टर वेळापत्रक</span>
+                <span>{state.language === 'mr' ? 'ग्रामीण फिरते तज्ज्ञ डॉक्टर वेळापत्रक' : state.language === 'hi' ? 'ग्रामीण विशेषज्ञ डॉक्टर समय सारिणी' : 'Rural Specialist Visiting Schedule'}</span>
               </div>
               <h1 className="text-2xl sm:text-4xl font-black text-slate-900">
                 {t.specialistTitle}
               </h1>
-              <p className="text-slate-600 text-base mt-2 max-w-3xl">
+              <p className="text-slate-600 text-sm sm:text-base mt-2 max-w-3xl">
                 {t.specialistSubtitle}
               </p>
             </div>
@@ -115,7 +111,7 @@ export default function SpecialistCalendarPage() {
                 <select
                   value={state.hospitalId}
                   onChange={(e) => setHospitalId(e.target.value)}
-                  className="bg-white border-2 border-slate-200 font-bold text-base text-slate-800 rounded-xl px-3 py-2 cursor-pointer focus:ring-2 focus:ring-primary focus:outline-hidden"
+                  className="bg-white border-2 border-slate-200 font-bold text-sm sm:text-base text-slate-800 rounded-xl px-3 py-2 cursor-pointer focus:ring-2 focus:ring-primary focus:outline-hidden"
                 >
                   {state.hospitals.map((h) => (
                     <option key={h.id} value={h.id}>
@@ -137,7 +133,7 @@ export default function SpecialistCalendarPage() {
                 <button
                   key={s.key}
                   onClick={() => setSelectedSpecialty(s.key)}
-                  className={`min-h-[44px] px-4 py-2 rounded-xl text-sm font-bold transition-all ${
+                  className={`min-h-[40px] px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer ${
                     selectedSpecialty === s.key
                       ? 'bg-primary text-white shadow-xs'
                       : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
@@ -166,10 +162,11 @@ export default function SpecialistCalendarPage() {
         {/* Specialist Doctor Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredSpecialists.length === 0 ? (
-            <div className="col-span-full bg-white rounded-3xl p-12 text-center text-slate-500 border border-slate-200">
+            <div className="col-span-full bg-white rounded-3xl p-10 text-center text-slate-500 border border-slate-200">
               <Stethoscope className="w-12 h-12 mx-auto mb-3 opacity-40 text-primary" />
-              <p className="text-lg font-bold">या रुग्णालयात या विभागाचे डॉक्टर उपलब्ध नाहीत.</p>
-              <p className="text-sm mt-1">कृपया दुसरा विभाग किंवा शेजारील तालुका रुग्णालय निवडा.</p>
+              <p className="text-base sm:text-lg font-bold">
+                {state.language === 'mr' ? 'या रुग्णालयात या विभागाचे डॉक्टर उपलब्ध नाहीत.' : 'No specialists available for this department.'}
+              </p>
             </div>
           ) : (
             filteredSpecialists.map((doc) => {
@@ -179,7 +176,7 @@ export default function SpecialistCalendarPage() {
               return (
                 <div
                   key={doc.id}
-                  className={`card-calm p-6 flex flex-col justify-between transition-all ${
+                  className={`card-calm p-5 sm:p-6 flex flex-col justify-between transition-all ${
                     isTodayCancelled
                       ? 'border-rose-300 bg-rose-50/40'
                       : 'hover:shadow-card hover:-translate-y-0.5'
@@ -192,7 +189,7 @@ export default function SpecialistCalendarPage() {
                         {doc.specialtyLabel[state.language]}
                       </span>
                       {isTodayCancelled ? (
-                        <StatusBadge level="red" text="सत्र रद्द (Cancelled)" size="sm" />
+                        <StatusBadge level="red" text={state.language === 'mr' ? 'सत्र रद्द' : state.language === 'hi' ? 'सत्र रद्द' : 'Cancelled'} size="sm" />
                       ) : (
                         <StatusBadge
                           level="green"
@@ -221,7 +218,7 @@ export default function SpecialistCalendarPage() {
                         </span>
                       </div>
                       <div className="flex items-center justify-between text-xs">
-                        <span className="font-bold text-slate-500">वेळ:</span>
+                        <span className="font-bold text-slate-500">{state.language === 'mr' ? 'वेळ:' : 'Timing:'}</span>
                         <span className="font-semibold text-slate-700">{doc.timings}</span>
                       </div>
                       <div className="flex items-center justify-between text-xs pt-1 border-t border-slate-200">
@@ -237,7 +234,11 @@ export default function SpecialistCalendarPage() {
                       <div className="mt-3 p-3 bg-rose-100 text-rose-900 rounded-xl text-xs font-bold flex items-start gap-2">
                         <AlertTriangle className="w-4 h-4 shrink-0 text-rose-600 mt-0.5" />
                         <div>
-                          <span>आजचे सत्र रद्द झाले आहे. सर्व नोंदणीकृत रुग्णांना SMS पाठवला गेला आहे.</span>
+                          <span>
+                            {state.language === 'mr'
+                              ? 'आजचे सत्र रद्द झाले आहे. सर्व रुग्णांना SMS पाठवला गेला आहे.'
+                              : 'Session cancelled today. SMS alert dispatched to all patients.'}
+                          </span>
                         </div>
                       </div>
                     )}
@@ -248,23 +249,23 @@ export default function SpecialistCalendarPage() {
                     <button
                       onClick={() => handleOpenBooking(doc)}
                       disabled={isTodayCancelled}
-                      className={`btn-calm-primary w-full text-base font-bold min-h-[48px] ${
+                      className={`btn-calm-primary w-full text-sm sm:text-base font-bold min-h-[46px] cursor-pointer ${
                         isTodayCancelled
                           ? 'opacity-40 cursor-not-allowed bg-slate-400'
                           : 'shadow-md shadow-primary/20'
                       }`}
                     >
-                      <Calendar className="w-5 h-5 text-sky-200" />
+                      <Calendar className="w-4 h-4 text-sky-200" />
                       <span>{t.bookSlotBtn}</span>
                     </button>
 
                     {/* Admin Cancellation Simulator Button */}
                     <div className="pt-1 flex items-center justify-between text-xs text-slate-500">
-                      <span>परीक्षक डेमो:</span>
+                      <span>{state.language === 'mr' ? 'परीक्षक डेमो:' : 'Demo test:'}</span>
                       {isTodayCancelled ? (
                         <button
                           onClick={() => restoreSpecialistSession(doc.id, doc.nextAvailableDate)}
-                          className="font-bold text-emerald-700 hover:underline flex items-center gap-1"
+                          className="font-bold text-emerald-700 hover:underline flex items-center gap-1 cursor-pointer"
                         >
                           <RotateCcw className="w-3.5 h-3.5" />
                           <span>{t.restoreDoctorBtn}</span>
@@ -272,7 +273,7 @@ export default function SpecialistCalendarPage() {
                       ) : (
                         <button
                           onClick={() => cancelSpecialistSession(doc.id, doc.nextAvailableDate)}
-                          className="font-bold text-rose-600 hover:underline flex items-center gap-1"
+                          className="font-bold text-rose-600 hover:underline flex items-center gap-1 cursor-pointer"
                         >
                           <AlertTriangle className="w-3.5 h-3.5" />
                           <span>{t.simulateCancelBtn}</span>
@@ -309,7 +310,7 @@ export default function SpecialistCalendarPage() {
                     {bookingSuccessToken}
                   </div>
                   <p className="text-xs text-slate-500">
-                    रुग्ण प्रवास ट्रॅकर उघडत आहे...
+                    {state.language === 'mr' ? 'रुग्ण प्रवास ट्रॅकर उघडत आहे...' : 'Opening journey tracker...'}
                   </p>
                 </div>
               ) : (
@@ -317,7 +318,7 @@ export default function SpecialistCalendarPage() {
                   {/* Time Slot Picker */}
                   <div>
                     <label className="text-xs font-bold text-slate-500 uppercase block mb-2">
-                      वेळ निवडा (Available Slots):
+                      {state.language === 'mr' ? 'वेळ निवडा (Available Slots):' : 'Select Time Slot:'}
                     </label>
                     <div className="grid grid-cols-3 gap-2">
                       {activeBookingDoctor.availableSlots.map((slot) => (
@@ -325,7 +326,7 @@ export default function SpecialistCalendarPage() {
                           type="button"
                           key={slot}
                           onClick={() => setSelectedSlot(slot)}
-                          className={`min-h-[44px] py-2 text-xs font-mono font-bold rounded-xl border-2 transition-all ${
+                          className={`min-h-[44px] py-2 text-xs font-mono font-bold rounded-xl border-2 transition-all cursor-pointer ${
                             selectedSlot === slot
                               ? 'border-primary bg-sky-50 text-primary shadow-xs'
                               : 'border-slate-200 text-slate-700 hover:bg-slate-50'
@@ -339,7 +340,7 @@ export default function SpecialistCalendarPage() {
 
                   {/* Patient Name */}
                   <div>
-                    <label className="text-xs font-bold text-slate-500 uppercase block mb-1">
+                    <label className="text-xs font-bold text-slate-800 uppercase block mb-1">
                       {t.patientNameLabel}
                     </label>
                     <div className="relative">
@@ -357,7 +358,7 @@ export default function SpecialistCalendarPage() {
 
                   {/* Mobile Number */}
                   <div>
-                    <label className="text-xs font-bold text-slate-500 uppercase block mb-1">
+                    <label className="text-xs font-bold text-slate-800 uppercase block mb-1">
                       {t.mobileLabel}
                     </label>
                     <div className="relative">
@@ -377,15 +378,15 @@ export default function SpecialistCalendarPage() {
                     <button
                       type="button"
                       onClick={() => setActiveBookingDoctor(null)}
-                      className="btn-calm-secondary flex-1 min-h-[48px] text-base"
+                      className="btn-calm-secondary flex-1 min-h-[46px] text-base cursor-pointer"
                     >
-                      रद्द करा
+                      {state.language === 'mr' ? 'रद्द करा' : 'Cancel'}
                     </button>
                     <button
                       type="submit"
-                      className="btn-calm-primary flex-1 min-h-[48px] text-base shadow-elevated"
+                      className="btn-calm-primary flex-1 min-h-[46px] text-base shadow-elevated cursor-pointer"
                     >
-                      <span>टोकन निश्चित करा</span>
+                      <span>{state.language === 'mr' ? 'टोकन निश्चित करा' : 'Confirm Token'}</span>
                       <ArrowRight className="w-5 h-5" />
                     </button>
                   </div>
